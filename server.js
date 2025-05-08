@@ -17,7 +17,7 @@ app.post('/remove-bg', upload.single('image'), async (req, res) => {
   const inputPath = req.file.path;
 
   try {
-    // const apiKey = process.env.REMOVE_BG_API_KEY;
+    const apiKey = process.env.REMOVE_BG_API_KEY;
     if (!apiKey) {
       throw new Error('REMOVE_BG_API_KEY not set in environment');
     }
