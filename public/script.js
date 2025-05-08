@@ -13,6 +13,12 @@ let selectedFile = null;
 upload.addEventListener('change', () => {
   const file = upload.files[0];
   if (file) {
+    // Validate if the selected file is an image
+    if (!file.type.startsWith('image/')) {
+      alert('Please upload a valid image file.');
+      return;
+    }
+
     selectedFile = file;
     preview.src = URL.createObjectURL(file);
     preview.hidden = false;
@@ -24,28 +30,37 @@ upload.addEventListener('change', () => {
 });
 
 removeBtn.addEventListener('click', async () => {
-    const formData = new FormData();
-    formData.append('image', selectedFile);
+  const formData = new FormData();
+  formData.append('image', selectedFile);
   
-    try {
-      const response = await fetch(`${BACKEND_URL}/remove-bg`, {
-        method: 'POST',
-        body: formData,
-      });
-  
-      if (!response.ok) {
-        throw new Error('Failed to remove background');
-      }
-  
-      const blob = await response.blob();
-      const imageUrl = URL.createObjectURL(blob);
-      outputImage.src = imageUrl;
-      downloadBtn.href = imageUrl;
-      downloadBtn.download = 'no-bg.png';
-      result.hidden = false;
-    } catch (err) {
-      alert('Error removing background. Please try again.');
-      console.error(err);
+  // Disable the button and show loading
+  removeBtn.disabled = true;
+  result.hidden = true;
+
+  try {
+    const response = await fetch(`${BACKEND_URL}/remove-bg`, {
+      method: 'POST',
+      body: formData,
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.error || 'Failed to remove background');
     }
-  });
-  
+
+    const blob = await response.blob();
+    const imageUrl = URL.createObjectURL(blob);
+    outputImage.src = imageUrl;
+
+    const originalFileName = selectedFile.name.replace(/\.[^/.]+$/, "");
+    downloadBtn.href = imageUrl;
+    downloadBtn.download = `${originalFileName}-no-bg.png`;
+
+    result.hidden = false;
+  } catch (err) {
+    alert('Error removing background. Please try again.');
+    console.error(err);
+  } finally {
+    removeBtn.disabled = false; // Re-enable the button
+  }
+});
