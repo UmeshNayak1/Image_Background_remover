@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Background Remover</title>
+  <link rel="stylesheet" href="style.css">
+  <script defer src="script.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+  <div class="container">
+    <h1>Image Background Remover</h1>
+    
+    <label for="upload" class="upload-btn">
+      <i class="fa fa-upload"></i> Upload Image
+      <input type="file" id="upload" accept="image/*" hidden>
+    </label>
+
+    <img id="preview" src="#" alt="Preview" hidden>
+    
+    <button id="remove-bg" disabled>Remove Background</button>
+    <hr class="divider">
+    <div id="result" hidden>
+      <h2>Background Removed Image</h2>
+      <img id="output-image" src="#">
+      <a id="download-btn" download="no-bg.png">
+        <i class="fa fa-download"></i> Download
+      </a>
+    </div>
+  </div>
+</body>
+</html>
