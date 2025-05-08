@@ -24,39 +24,28 @@ upload.addEventListener('change', () => {
 });
 
 removeBtn.addEventListener('click', async () => {
-  if (!selectedFile) {
-    alert('Please upload an image first.');
-    return;
-  }
-
-  const formData = new FormData();
-  formData.append('image', selectedFile);
-
-  try {
-    removeBtn.disabled = true;
-    removeBtn.textContent = 'Removing...';
-
-    const response = await fetch(`${BACKEND_URL}/remove-bg`, {
-      method: 'POST',
-      body: formData,
-    });
-
-    removeBtn.textContent = 'Remove Background';
-
-    if (!response.ok) {
-      const errText = await response.text();
-      console.error('Server response:', errText);
-      throw new Error('Failed to remove background.');
+    const formData = new FormData();
+    formData.append('image', selectedFile);
+  
+    try {
+      const response = await fetch(`${BACKEND_URL}/remove-bg`, {
+        method: 'POST',
+        body: formData,
+      });
+  
+      if (!response.ok) {
+        throw new Error('Failed to remove background');
+      }
+  
+      const blob = await response.blob();
+      const imageUrl = URL.createObjectURL(blob);
+      outputImage.src = imageUrl;
+      downloadBtn.href = imageUrl;
+      downloadBtn.download = 'no-bg.png';
+      result.hidden = false;
+    } catch (err) {
+      alert('Error removing background. Please try again.');
+      console.error(err);
     }
-
-    const data = await response.json();
-    outputImage.src = `${BACKEND_URL}${data.url}`;
-    downloadBtn.href = `${BACKEND_URL}${data.url}`;
-    result.hidden = false;
-  } catch (err) {
-    alert('Error removing background. Please try again.');
-    console.error(err);
-  } finally {
-    removeBtn.disabled = false;
-  }
-});
+  });
+  
