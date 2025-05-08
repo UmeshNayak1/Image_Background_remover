@@ -3,15 +3,21 @@ const multer = require('multer');
 const fs = require('fs');
 const axios = require('axios');
 const FormData = require('form-data');
-const cors = require('cors');
+const cors = require('cors'); // Import CORS
 require('dotenv').config();
 
 const app = express();
 const upload = multer({ dest: 'uploads/', limits: { fileSize: 10 * 1024 * 1024 } });
 const PORT = process.env.PORT || 3000;
 
+// Enable CORS
+app.use(cors({
+  origin: 'https://eraseedge.netlify.app',  // Allow requests only from this frontend
+  methods: ['GET', 'POST'],                // Specify allowed methods
+  allowedHeaders: ['Content-Type', 'Authorization'],  // Allow specific headers
+}));
+
 app.use(express.static('public'));
-app.use(cors());
 
 app.post('/remove-bg', upload.single('image'), async (req, res) => {
   const inputPath = req.file.path;
@@ -32,7 +38,7 @@ app.post('/remove-bg', upload.single('image'), async (req, res) => {
       {
         headers: {
           ...formData.getHeaders(),
-          'X-Api-Key': apiKey, // ✅ Correct usage
+          'X-Api-Key': apiKey,
         },
         responseType: 'arraybuffer',
       }
