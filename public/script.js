@@ -5,15 +5,18 @@ const result = document.getElementById('result');
 const outputImage = document.getElementById('output-image');
 const downloadBtn = document.getElementById('download-btn');
 
-// ✅ Set your Render backend URL here (do not include trailing slash)
+// ✅ Set your Render backend URL here (no trailing slash)
 const BACKEND_URL = 'https://image-background-remover-k2kz.onrender.com';
 
 let selectedFile = null;
 
+// Hide preview initially
+preview.style.display = "none";
+
 upload.addEventListener('change', () => {
   const file = upload.files[0];
   if (file) {
-    // Validate if the selected file is an image
+    // Validate file type
     if (!file.type.startsWith('image/')) {
       alert('Please upload a valid image file.');
       return;
@@ -21,7 +24,10 @@ upload.addEventListener('change', () => {
 
     selectedFile = file;
     preview.src = URL.createObjectURL(file);
-    preview.hidden = false;
+
+    // Add animation and show preview
+    preview.style.display = "block";
+    preview.classList.add("show");
     removeBtn.disabled = false;
     result.hidden = true;
     outputImage.src = '';
@@ -30,11 +36,16 @@ upload.addEventListener('change', () => {
 });
 
 removeBtn.addEventListener('click', async () => {
+  if (!selectedFile) return;
+
   const formData = new FormData();
   formData.append('image', selectedFile);
-  
-  // Disable the button and show loading
+
+  // Disable button & show loading spinner text
   removeBtn.disabled = true;
+  const originalText = removeBtn.innerHTML;
+  removeBtn.innerHTML = `<i class="fa fa-spinner fa-spin"></i> Processing...`;
+
   result.hidden = true;
 
   try {
@@ -61,6 +72,7 @@ removeBtn.addEventListener('click', async () => {
     alert('Error removing background. Please try again.');
     console.error(err);
   } finally {
-    removeBtn.disabled = false; // Re-enable the button
+    removeBtn.disabled = false;
+    removeBtn.innerHTML = originalText; // restore button text
   }
 });
