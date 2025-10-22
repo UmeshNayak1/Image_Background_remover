@@ -2,34 +2,44 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Background Remover</title>
+  <title>EraseEdge | Background Remover</title>
   <link rel="stylesheet" href="style.css">
   <script defer src="script.js"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
-    <h1 style="text-align: center; width: 100%; margin-top: 20px;">Welcome to EraseEdge..</h1>
-    <h2 style="text-align: center; width: 100%;">Focus on What Matters. We'll Cut the Rest.</h2>
-    <br><br>
-    <div class="container">
-        <h1>Image Background Remover</h1>
-        
-        <label for="upload" class="upload-btn">
-          <i class="fa fa-upload"></i> Upload Image
-          <input type="file" id="upload" accept="image/*" hidden>
-        </label>
-    
-        <img id="preview" src="#" alt="Preview" hidden>
-        
-        <button id="remove-bg" disabled>Remove Background</button>
-        <hr class="divider">
-        <div id="result" hidden>
-          <h2>Background Removed Image</h2>
-          <img id="output-image" src="#">
-          <a id="download-btn" download="no-bg.png">
-            <i class="fa fa-download"></i> Download
-          </a>
-        </div>
-      </div>
+  <div class="hero fade-in">
+    <h1 class="title glow-text">✨ Welcome to <span>EraseEdge</span></h1>
+    <h2 class="subtitle slide-up">Focus on What Matters. We'll Cut the Rest.</h2>
+  </div>
+
+  <div class="container glass-card float-in">
+    <h1 class="section-title"><i class="fa-solid fa-scissors swing"></i> Image Background Remover</h1>
+
+    <label for="upload" class="upload-btn pulse">
+      <i class="fa fa-upload"></i> Upload Image
+      <input type="file" id="upload" accept="image/*" hidden>
+    </label>
+
+    <img id="preview" src="#" alt="Preview" hidden class="fade-in-img">
+
+    <button id="remove-bg" class="action-btn pulse" disabled>
+      <i class="fa-solid fa-wand-magic-sparkles"></i> Remove Background
+    </button>
+
+    <hr class="divider">
+
+    <div id="result" hidden>
+      <h2 class="result-title fade-in"><i class="fa-solid fa-image"></i> Background Removed</h2>
+      <img id="output-image" src="#" class="pop-in">
+      <a id="download-btn" class="download-btn glow" download="no-bg.png">
+        <i class="fa fa-download"></i> Download Image
+      </a>
+    </div>
+  </div>
+
+  <footer class="fade-in">
+    <p>Made with ❤️ by <strong>EraseEdge</strong></p>
+  </footer>
 </body>
 </html>
